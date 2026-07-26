@@ -16,6 +16,8 @@ import { StorageModule } from './storage/storage.module';
 import { SearchModule } from './search/search.module';
 import { PrismaModule } from './prisma/prisma.module';
 
+import { AppController } from './app.controller';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -35,5 +37,6 @@ import { PrismaModule } from './prisma/prisma.module';
     SearchModule,
     PrismaModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

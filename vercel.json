@@ -1,6 +1,0 @@
-{
-  "name": "voxspeak",
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm --filter @voxspeak/web build",
-  "framework": "nextjs"
-}

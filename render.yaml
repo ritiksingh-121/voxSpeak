@@ -1,0 +1,57 @@
+services:
+  # --- NestJS API Service ---
+  - type: web
+    name: voxspeak-api
+    runtime: node
+    plan: starter
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm --filter @voxspeak/api build
+    startCommand: cd apps/api && npx prisma db push --accept-data-loss && node dist/main
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: voxspeak-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: voxspeak-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://web-five-pi-58.vercel.app
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: voxspeak-ai-service
+          property: host
+
+  # --- Python AI Service ---
+  - type: web
+    name: voxspeak-ai-service
+    runtime: python
+    rootDir: apps/ai-service
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_SIZE
+        value: base
+
+  # --- Managed Redis Cache/Queue ---
+  - type: redis
+    name: voxspeak-redis
+    plan: starter
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+databases:
+  # --- Managed PostgreSQL Database ---
+  - name: voxspeak-db
+    databaseName: voxspeak
+    user: voxspeak
+    plan: starter
