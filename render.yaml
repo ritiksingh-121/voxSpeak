@@ -1,9 +1,9 @@
 services:
-  # --- NestJS API Service ---
+  # --- NestJS API Service (Free Plan) ---
   - type: web
     name: voxspeak-api
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: pnpm install --no-frozen-lockfile && pnpm --filter @voxspeak/api build
     startCommand: cd apps/api && npx prisma db push --accept-data-loss && node dist/main
     healthCheckPath: /api/health
@@ -29,12 +29,12 @@ services:
           name: voxspeak-ai-service
           property: host
 
-  # --- Python AI Service ---
+  # --- Python AI Service (Free Plan) ---
   - type: web
     name: voxspeak-ai-service
     runtime: python
     rootDir: apps/ai-service
-    plan: starter
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -42,16 +42,16 @@ services:
       - key: MODEL_SIZE
         value: base
 
-  # --- Managed Redis Cache/Queue ---
+  # --- Managed Redis Cache/Queue (Free Plan) ---
   - type: redis
     name: voxspeak-redis
-    plan: starter
+    plan: free
     maxmemoryPolicy: noeviction
     ipAllowList: []
 
 databases:
-  # --- Managed PostgreSQL Database ---
+  # --- Managed PostgreSQL Database (Free Plan) ---
   - name: voxspeak-db
     databaseName: voxspeak
     user: voxspeak
-    plan: starter
+    plan: free
