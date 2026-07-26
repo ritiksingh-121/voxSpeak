@@ -1,0 +1,272 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  passwordHash         String?
+  name                 String?
+  avatarUrl            String?
+  isOnboarded          Boolean   @default(false)
+
+  nativeLanguage       String?
+  targetLanguage       String    @default("en")
+  proficiencyLevel     String?
+  interests            String[]
+  learningGoals        String[]
+  dailyGoalMinutes     Int       @default(15)
+
+  xp                   Int       @default(0)
+  level                Int       @default(1)
+  coins                Int       @default(0)
+  totalSessions        Int       @default(0)
+  totalMinutes         Int       @default(0)
+  totalWordsSpoken     Int       @default(0)
+  accuracyScore        Float?
+  streakDays           Int       @default(0)
+  longestStreak        Int       @default(0)
+
+  theme                String    @default("dark")
+  ttsVoice             String    @default("default")
+  ttsSpeed             Float     @default(1.0)
+  notificationEnabled  Boolean   @default(true)
+
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  accounts            Account[]
+  conversations       Conversation[]
+  voiceRecordings     VoiceRecording[]
+  vocabularyItems     VocabularyItem[]
+  mistakes            Mistake[]
+  weakAreas           WeakArea[]
+  streak              Streak?
+  xpTransactions      XpTransaction[]
+  userAchievements    UserAchievement[]
+  notifications       Notification[]
+  subscription        Subscription?
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  provider          String
+  providerAccountId String?
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Conversation {
+  id           String   @id @default(cuid())
+  userId       String
+  title        String?
+  mode         String
+  topic        String?
+  status       String   @default("active")
+  messageCount Int      @default(0)
+  durationSecs Int      @default(0)
+  xpEarned     Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user     User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages Message[]
+  feedback ConversationFeedback?
+
+  @@index([userId, createdAt])
+}
+
+model Message {
+  id                    String   @id @default(cuid())
+  conversationId        String
+  role                  String
+  content               String
+  type                  String?
+  audioUrl              String?
+  durationMs            Int?
+  pronunciationScore    Float?
+  grammarIssues         Json?
+  vocabularySuggestions Json?
+  metadata              Json?
+  createdAt             DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+}
+
+model ConversationFeedback {
+  id               String   @id @default(cuid())
+  conversationId   String   @unique
+  overallScore     Float?
+  pronunciationAvg Float?
+  grammarScore     Float?
+  vocabularyScore  Float?
+  fluencyScore     Float?
+  confidenceScore  Float?
+  strengths        String[]
+  weakAreas        String[]
+  suggestions      String?
+  aiNotes          Json?
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
+
+model VoiceRecording {
+  id                String   @id @default(cuid())
+  userId            String
+  conversationId    String?
+  messageId         String?
+  filePath          String
+  durationMs        Int
+  fileSizeBytes     Int
+  format            String
+  transcript        String?
+  pronunciationScore Float?
+  phonemeData       Json?
+  createdAt         DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VocabularyItem {
+  id               String    @id @default(cuid())
+  userId           String
+  word             String
+  definition       String?
+  exampleSentence  String?
+  pronunciation    String?
+  context          String?
+  difficulty       String?
+  status           String    @default("new")
+  timesEncountered Int       @default(1)
+  timesCorrect     Int       @default(0)
+  timesWrong       Int       @default(0)
+  lastReviewed     DateTime?
+  nextReview       DateTime?
+  createdAt        DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, word])
+  @@index([userId, status])
+}
+
+model Mistake {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String
+  original    String
+  correction  String
+  rule        String?
+  context     String?
+  category    String?
+  count       Int      @default(1)
+  mastered    Boolean  @default(false)
+  lastOccurred DateTime
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WeakArea {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String
+  name        String
+  score       Float
+  trend       String   @default("stable")
+  lastUpdated DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type, name])
+}
+
+model Streak {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  currentCount Int       @default(0)
+  longestCount Int       @default(0)
+  lastActivity DateTime?
+  frozenDays   Int       @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model XpTransaction {
+  id          String   @id @default(cuid())
+  userId      String
+  amount      Int
+  reason      String
+  referenceId String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  title       String
+  description String
+  iconUrl     String?
+  xpReward    Int      @default(0)
+  criteria    Json?
+  rarity      String   @default("common")
+  createdAt   DateTime @default(now())
+
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String
+  data      Json?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id                 String    @id @default(cuid())
+  userId             String    @unique
+  plan               String    @default("free")
+  status             String    @default("active")
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  stripeId           String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

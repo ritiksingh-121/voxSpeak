@@ -1,0 +1,27 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+*.log
+.turbo/
+coverage/
+*.tsbuildinfo
+.vercel/
+out/
+
+# Prisma
+packages/database/prisma/migrations/
+
+# Docker
+docker/volumes/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
