@@ -42,3 +42,6 @@ const newUser: UserProfile = {
 
 console.log(manager.addUser(newUser));
 manager.logActiveUsers();
+
+
+//add comment properly
