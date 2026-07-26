@@ -1,0 +1,192 @@
+Successfully compiled: 67 files with swc (317.91ms)
+Failed to obtain server version. Unable to check client-server compatibility. Set checkCompatibility=false to skip version check.
+[31m[Nest] 15400  - [39m25/07/2026, 11:39:15 pm [31m  ERROR[39m [38;5;3m[HttpExceptionFilter] [39m[31mUnhandled exception: 
+Invalid `this.prisma.user.findUnique()` invocation in
+C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:41
+
+   9 constructor(private prisma: PrismaService) {}
+  10 
+  11 async findById(id: string) {
+→ 12   const user = await this.prisma.user.findUnique({
+         where: {
+           id: undefined,
+       ?   email?: String,
+       ?   AND?: UserWhereInput | UserWhereInput[],
+       ?   OR?: UserWhereInput[],
+       ?   NOT?: UserWhereInput | UserWhereInput[],
+       ?   passwordHash?: StringNullableFilter | String | Null,
+       ?   name?: StringNullableFilter | String | Null,
+       ?   avatarUrl?: StringNullableFilter | String | Null,
+       ?   isOnboarded?: BoolFilter | Boolean,
+       ?   createdAt?: DateTimeFilter | DateTime,
+       ?   updatedAt?: DateTimeFilter | DateTime,
+       ?   accounts?: AccountListRelationFilter,
+       ?   sessions?: SessionListRelationFilter,
+       ?   profile?: ProfileNullableRelationFilter | ProfileWhereInput | Null,
+       ?   settings?: UserSettingsNullableRelationFilter | UserSettingsWhereInput | Null,
+       ?   goals?: GoalListRelationFilter,
+       ?   conversations?: ConversationListRelationFilter,
+       ?   voiceRecordings?: VoiceRecordingListRelationFilter,
+       ?   vocabularyItems?: VocabularyItemListRelationFilter,
+       ?   mistakes?: MistakeListRelationFilter,
+       ?   weakAreas?: WeakAreaListRelationFilter,
+       ?   streak?: StreakNullableRelationFilter | StreakWhereInput | Null,
+       ?   xpTransactions?: XpTransactionListRelationFilter,
+       ?   userAchievements?: UserAchievementListRelationFilter,
+       ?   notifications?: NotificationListRelationFilter,
+       ?   subscription?: SubscriptionNullableRelationFilter | SubscriptionWhereInput | Null,
+       ?   feedback?: ConversationFeedbackListRelationFilter
+         },
+         include: {
+           profile: true,
+           settings: true
+         }
+       })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.[39m
+PrismaClientValidationError: 
+Invalid `this.prisma.user.findUnique()` invocation in
+C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:41
+
+   9 constructor(private prisma: PrismaService) {}
+  10 
+  11 async findById(id: string) {
+→ 12   const user = await this.prisma.user.findUnique({
+         where: {
+           id: undefined,
+       ?   email?: String,
+       ?   AND?: UserWhereInput | UserWhereInput[],
+       ?   OR?: UserWhereInput[],
+       ?   NOT?: UserWhereInput | UserWhereInput[],
+       ?   passwordHash?: StringNullableFilter | String | Null,
+       ?   name?: StringNullableFilter | String | Null,
+       ?   avatarUrl?: StringNullableFilter | String | Null,
+       ?   isOnboarded?: BoolFilter | Boolean,
+       ?   createdAt?: DateTimeFilter | DateTime,
+       ?   updatedAt?: DateTimeFilter | DateTime,
+       ?   accounts?: AccountListRelationFilter,
+       ?   sessions?: SessionListRelationFilter,
+       ?   profile?: ProfileNullableRelationFilter | ProfileWhereInput | Null,
+       ?   settings?: UserSettingsNullableRelationFilter | UserSettingsWhereInput | Null,
+       ?   goals?: GoalListRelationFilter,
+       ?   conversations?: ConversationListRelationFilter,
+       ?   voiceRecordings?: VoiceRecordingListRelationFilter,
+       ?   vocabularyItems?: VocabularyItemListRelationFilter,
+       ?   mistakes?: MistakeListRelationFilter,
+       ?   weakAreas?: WeakAreaListRelationFilter,
+       ?   streak?: StreakNullableRelationFilter | StreakWhereInput | Null,
+       ?   xpTransactions?: XpTransactionListRelationFilter,
+       ?   userAchievements?: UserAchievementListRelationFilter,
+       ?   notifications?: NotificationListRelationFilter,
+       ?   subscription?: SubscriptionNullableRelationFilter | SubscriptionWhereInput | Null,
+       ?   feedback?: ConversationFeedbackListRelationFilter
+         },
+         include: {
+           profile: true,
+           settings: true
+         }
+       })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
+    at wn (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:130:9633)
+    at async UsersService.findById (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:18)
+[31m[Nest] 15400  - [39m25/07/2026, 11:39:48 pm [31m  ERROR[39m [38;5;3m[HttpExceptionFilter] [39m[31mUnhandled exception: 
+Invalid `this.prisma.user.findUnique()` invocation in
+C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:41
+
+   9 constructor(private prisma: PrismaService) {}
+  10 
+  11 async findById(id: string) {
+→ 12   const user = await this.prisma.user.findUnique({
+         where: {
+           id: undefined,
+       ?   email?: String,
+       ?   AND?: UserWhereInput | UserWhereInput[],
+       ?   OR?: UserWhereInput[],
+       ?   NOT?: UserWhereInput | UserWhereInput[],
+       ?   passwordHash?: StringNullableFilter | String | Null,
+       ?   name?: StringNullableFilter | String | Null,
+       ?   avatarUrl?: StringNullableFilter | String | Null,
+       ?   isOnboarded?: BoolFilter | Boolean,
+       ?   createdAt?: DateTimeFilter | DateTime,
+       ?   updatedAt?: DateTimeFilter | DateTime,
+       ?   accounts?: AccountListRelationFilter,
+       ?   sessions?: SessionListRelationFilter,
+       ?   profile?: ProfileNullableRelationFilter | ProfileWhereInput | Null,
+       ?   settings?: UserSettingsNullableRelationFilter | UserSettingsWhereInput | Null,
+       ?   goals?: GoalListRelationFilter,
+       ?   conversations?: ConversationListRelationFilter,
+       ?   voiceRecordings?: VoiceRecordingListRelationFilter,
+       ?   vocabularyItems?: VocabularyItemListRelationFilter,
+       ?   mistakes?: MistakeListRelationFilter,
+       ?   weakAreas?: WeakAreaListRelationFilter,
+       ?   streak?: StreakNullableRelationFilter | StreakWhereInput | Null,
+       ?   xpTransactions?: XpTransactionListRelationFilter,
+       ?   userAchievements?: UserAchievementListRelationFilter,
+       ?   notifications?: NotificationListRelationFilter,
+       ?   subscription?: SubscriptionNullableRelationFilter | SubscriptionWhereInput | Null,
+       ?   feedback?: ConversationFeedbackListRelationFilter
+         },
+         include: {
+           profile: true,
+           settings: true
+         }
+       })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.[39m
+PrismaClientValidationError: 
+Invalid `this.prisma.user.findUnique()` invocation in
+C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:41
+
+   9 constructor(private prisma: PrismaService) {}
+  10 
+  11 async findById(id: string) {
+→ 12   const user = await this.prisma.user.findUnique({
+         where: {
+           id: undefined,
+       ?   email?: String,
+       ?   AND?: UserWhereInput | UserWhereInput[],
+       ?   OR?: UserWhereInput[],
+       ?   NOT?: UserWhereInput | UserWhereInput[],
+       ?   passwordHash?: StringNullableFilter | String | Null,
+       ?   name?: StringNullableFilter | String | Null,
+       ?   avatarUrl?: StringNullableFilter | String | Null,
+       ?   isOnboarded?: BoolFilter | Boolean,
+       ?   createdAt?: DateTimeFilter | DateTime,
+       ?   updatedAt?: DateTimeFilter | DateTime,
+       ?   accounts?: AccountListRelationFilter,
+       ?   sessions?: SessionListRelationFilter,
+       ?   profile?: ProfileNullableRelationFilter | ProfileWhereInput | Null,
+       ?   settings?: UserSettingsNullableRelationFilter | UserSettingsWhereInput | Null,
+       ?   goals?: GoalListRelationFilter,
+       ?   conversations?: ConversationListRelationFilter,
+       ?   voiceRecordings?: VoiceRecordingListRelationFilter,
+       ?   vocabularyItems?: VocabularyItemListRelationFilter,
+       ?   mistakes?: MistakeListRelationFilter,
+       ?   weakAreas?: WeakAreaListRelationFilter,
+       ?   streak?: StreakNullableRelationFilter | StreakWhereInput | Null,
+       ?   xpTransactions?: XpTransactionListRelationFilter,
+       ?   userAchievements?: UserAchievementListRelationFilter,
+       ?   notifications?: NotificationListRelationFilter,
+       ?   subscription?: SubscriptionNullableRelationFilter | SubscriptionWhereInput | Null,
+       ?   feedback?: ConversationFeedbackListRelationFilter
+         },
+         include: {
+           profile: true,
+           settings: true
+         }
+       })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
+    at wn (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:29:1363)
+    at $n.handleRequestError (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6958)
+    at $n.handleAndLogRequestError (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6623)
+    at $n.request (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:121:6307)
+    at async l (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\node_modules\.prisma\client\runtime\library.js:130:9633)
+    at async UsersService.findById (C:\Users\ritik\OneDrive\Documents\speakVtt\apps\api\src\modules\users\users.service.ts:12:18)
+Successfully compiled src\modules\users\users.controller.ts with swc (14.94ms)
+Failed to obtain server version. Unable to check client-server compatibility. Set checkCompatibility=false to skip version check.
