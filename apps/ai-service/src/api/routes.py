@@ -34,12 +34,54 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-whisper = WhisperService()
-tts = PiperTTSService()
-ollama = OllamaClient()
-embeddings = EmbeddingService()
-pronunciation = PronunciationAnalyzer()
-grammar = GrammarChecker(ollama)
+_whisper = None
+_tts = None
+_ollama = None
+_embeddings = None
+_pronunciation = None
+_grammar = None
+
+
+def get_whisper() -> WhisperService:
+    global _whisper
+    if _whisper is None:
+        _whisper = WhisperService()
+    return _whisper
+
+
+def get_tts() -> PiperTTSService:
+    global _tts
+    if _tts is None:
+        _tts = PiperTTSService()
+    return _tts
+
+
+def get_ollama() -> OllamaClient:
+    global _ollama
+    if _ollama is None:
+        _ollama = OllamaClient()
+    return _ollama
+
+
+def get_embeddings() -> EmbeddingService:
+    global _embeddings
+    if _embeddings is None:
+        _embeddings = EmbeddingService()
+    return _embeddings
+
+
+def get_pronunciation() -> PronunciationAnalyzer:
+    global _pronunciation
+    if _pronunciation is None:
+        _pronunciation = PronunciationAnalyzer()
+    return _pronunciation
+
+
+def get_grammar() -> GrammarChecker:
+    global _grammar
+    if _grammar is None:
+        _grammar = GrammarChecker(get_ollama())
+    return _grammar
 
 
 @router.post("/stt/transcribe", response_model=STTResponse)
@@ -61,7 +103,7 @@ async def transcribe_audio(
         tmp_path = tmp.name
 
     try:
-        result = whisper.transcribe(tmp_path, language=language)
+        result = get_whisper().transcribe(tmp_path, language=language)
         return STTResponse(**result)
     except Exception as e:
         logger.error(f"Transcription failed: {e}")
@@ -76,7 +118,7 @@ async def transcribe_audio(
 @router.post("/tts/synthesize")
 async def synthesize_speech(request: TTSRequest):
     try:
-        audio_data = tts.synthesize(request.text, request.voice)
+        audio_data = get_tts().synthesize(request.text, request.voice)
         return Response(
             content=audio_data,
             media_type="audio/wav",
@@ -91,13 +133,13 @@ async def synthesize_speech(request: TTSRequest):
 
 @router.get("/tts/voices")
 async def list_voices():
-    return {"voices": tts.get_available_voices()}
+    return {"voices": get_tts().get_available_voices()}
 
 
 @router.post("/llm/generate", response_model=LLMResponse)
 async def llm_generate(request: LLMRequest):
     try:
-        response = await ollama.generate(
+        response = await get_ollama().generate(
             prompt=request.prompt,
             system_prompt=request.system_prompt,
             model=request.model,
@@ -112,7 +154,7 @@ async def llm_generate(request: LLMRequest):
 async def llm_chat(request: ChatRequest):
     try:
         messages = [m.model_dump() for m in request.messages]
-        response = await ollama.chat(
+        response = await get_ollama().chat(
             messages=messages,
             model=request.model,
         )
@@ -125,7 +167,7 @@ async def llm_chat(request: ChatRequest):
 @router.post("/llm/stream")
 async def llm_stream(request: LLMRequest):
     try:
-        generator = await ollama.generate(
+        generator = await get_ollama().generate(
             prompt=request.prompt,
             system_prompt=request.system_prompt,
             model=request.model,
@@ -146,7 +188,7 @@ async def llm_stream(request: LLMRequest):
 @router.get("/llm/models")
 async def list_models():
     try:
-        models = await ollama.get_available_models()
+        models = await get_ollama().get_available_models()
         return {"models": models}
     except Exception as e:
         logger.error(f"Failed to list models: {e}")
@@ -157,9 +199,9 @@ async def list_models():
 async def create_embeddings(request: EmbeddingRequest):
     try:
         if request.batch:
-            result = embeddings.embed_batch(request.batch)
+            result = get_embeddings().embed_batch(request.batch)
             return EmbeddingResponse(embeddings=result)
-        result = embeddings.embed(request.text)
+        result = get_embeddings().embed(request.text)
         return EmbeddingResponse(embedding=result)
     except Exception as e:
         logger.error(f"Embedding failed: {e}")
@@ -169,7 +211,7 @@ async def create_embeddings(request: EmbeddingRequest):
 @router.post("/pronunciation/analyze", response_model=PronunciationResponse)
 async def analyze_pronunciation(request: PronunciationRequest):
     try:
-        result = pronunciation.compare(
+        result = get_pronunciation().compare(
             request.user_transcript,
             request.expected_text,
         )
@@ -182,7 +224,7 @@ async def analyze_pronunciation(request: PronunciationRequest):
 @router.post("/grammar/check", response_model=GrammarResponse)
 async def check_grammar(request: GrammarRequest):
     try:
-        result = await grammar.check(request.text)
+        result = await get_grammar().check(request.text)
         return GrammarResponse(**result)
     except Exception as e:
         logger.error(f"Grammar check failed: {e}")

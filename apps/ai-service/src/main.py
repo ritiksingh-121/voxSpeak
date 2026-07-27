@@ -33,3 +33,11 @@ app.include_router(router, prefix="/api/v1")
 @app.get("/health")
 async def root_health():
     return {"status": "ok", "service": "voxspeak-ai-service", "version": "1.0.0"}
+
+
+if __name__ == "__main__":
+    import os
+    import uvicorn
+
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("src.main:app", host="0.0.0.0", port=port)

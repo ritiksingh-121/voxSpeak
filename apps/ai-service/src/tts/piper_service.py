@@ -19,12 +19,18 @@ _VOICE_MAP = {
 
 class PiperTTSService:
     def __init__(self, piper_path: str | None = None, voices_dir: str | None = None):
-        self.piper_path = piper_path or self._find_piper()
+        self._piper_path = piper_path
         self.voices_dir = voices_dir or os.environ.get(
             "PIPER_VOICES_DIR",
             str(Path.home() / ".piper" / "voices"),
         )
         os.makedirs(self.voices_dir, exist_ok=True)
+
+    @property
+    def piper_path(self) -> str:
+        if not hasattr(self, "_resolved_piper_path") or self._resolved_piper_path is None:
+            self._resolved_piper_path = self._piper_path or self._find_piper()
+        return self._resolved_piper_path
 
     def _find_piper(self) -> str:
         candidates = ["piper", "piper-tts"]

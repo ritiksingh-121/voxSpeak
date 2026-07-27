@@ -1,7 +1,6 @@
 import os
 import tempfile
 import numpy as np
-from faster_whisper import WhisperModel
 
 
 class WhisperService:
@@ -31,8 +30,9 @@ class WhisperService:
         return "cpu"
 
     @property
-    def model(self) -> WhisperModel:
+    def model(self):
         if self._model is None:
+            from faster_whisper import WhisperModel
             self._model = WhisperModel(
                 self.model_size,
                 device=self.device,

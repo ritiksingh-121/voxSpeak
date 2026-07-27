@@ -1,7 +1,6 @@
 from typing import List
 
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 
 class EmbeddingService:
@@ -19,8 +18,9 @@ class EmbeddingService:
         self.model_name = model_name
         self._initialized = True
 
-    def _get_model(self) -> SentenceTransformer:
+    def _get_model(self):
         if EmbeddingService._model is None:
+            from sentence_transformers import SentenceTransformer
             EmbeddingService._model = SentenceTransformer(self.model_name)
         return EmbeddingService._model
 

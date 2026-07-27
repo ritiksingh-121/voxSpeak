@@ -27,3 +27,9 @@ Thumbs.db
 *.swo
 
 .vercel
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
